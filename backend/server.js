@@ -17,23 +17,61 @@ mongoose.connect("mongodb+srv://esaseethapathi:3GTMRnhBItVlC9qB@cluster0.exbsa9l
   
 
 app.post('/insert', async(req, res) => {
-  const newEmail = req.body.new_email1
-  const newPassword1 = req.body.new_password1
-  const newPassword2 = req.body.new_password2
-  const formData = new Info({
-      newUserEmail: newEmail,
-      newUserPassword1: newPassword1,
-      newUserPassword2: newPassword2
-  })
+//   const newEmail = req.body.new_email1
+//   const newPassword1 = req.body.new_password1
+//   const newPassword2 = req.body.new_password2
+//   const formData = new Info({
+//       newUserEmail: newEmail,
+//       newUserPassword1: newPassword1,
+//       newUserPassword2: newPassword2
+//   })
+
+const{newUserEmail,newUserPassword1,newUserPassword2,}=req.body;
 
   try {
+
+    const user = await Info.findOne({ newUserEmail });
+  
+      
+      if (user ) {
+        return res.send("Email already exist");
+      }
+      else{
+        const formData = new Info({
+                  newUserEmail,
+                  newUserPassword1,
+                  newUserPassword2,
+              })
       await formData.save();
-      res.send("inserted data..")
+      return res.send("Signed up successfully..")
+      }
   } catch(err) {
 
       console.log(err)
+      res.send("Internal  error");
   }
 });
+
+app.post('/login', async (req, res) => {
+    const { newUserEmail, newUserPassword1 } = req.body;
+  
+    try {
+      
+      const user = await Info.findOne({ newUserEmail });
+  
+      
+      if (user && user.newUserPassword1 == newUserPassword1 ) {
+        return res.send("login success");
+      }
+     else{
+      res.send("invalid credentials");
+    }
+    } catch (error) {
+      console.error('Error during login', error);
+      res.send("Internal server error");
+    }
+  });
+
 
 const port = process.env.PORT || 4000;
 
