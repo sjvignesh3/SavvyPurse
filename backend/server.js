@@ -64,7 +64,7 @@ app.post('/login', async (req, res) => {
         return res.send("login success");
       }
      else{
-      res.send("invalid credentials");
+      res.send("Invalid credentials");
     }
     } catch (error) {
       console.error('Error during login', error);
