@@ -7,32 +7,25 @@ const LoginSignup = () => {
   const[newUserEmail,setNewUserEmail]=useState('');
   const[newUserPassword1,setNewUserPassword1]=useState('');
   const[newUserPassword2,setNewUserPassword2]=useState('');
+  const [userError, setUserError] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
-     console.log(newUserEmail);
-
-    //  const userCredentials = {
-    //   email,
-    //   pass,
-    // };
-
     // Send data to server
     if(newUserEmail===""||newUserPassword1==="") {
-      alert("fill all the required feild");
+      setUserError('Fill all the required field');
+      //alert("");
       return;
     }
     
-       axios.post('http://localhost:4000/login', {newUserEmail,newUserPassword1})
-       
+    axios.post('http://localhost:4000/login', {newUserEmail,newUserPassword1})
       .then(function (response) {
         console.log(response);
+        setUserError('');
         const loginDisplay=JSON.stringify(response.data);
-      alert(loginDisplay);
+        setUserError(loginDisplay);
       })
       .catch(function (error) {
-
         console.log(error);
       });
      setNewUserEmail('');
@@ -41,15 +34,12 @@ const LoginSignup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-     console.log(newUserEmail);
-
-
-     if(newUserEmail===""||newUserPassword1===""||newUserPassword2==="") {
-      alert("fill all the required feild");
+    if(newUserEmail===""||newUserPassword1===""||newUserPassword2==="") {
+      setUserError('Fill all the required field');
       return;
     }
     if(newUserPassword1!==newUserPassword2){
-      alert("password does not match");
+      setUserError('Passwords does not match');
       return;
     }
 
@@ -61,8 +51,9 @@ const LoginSignup = () => {
     })
     .then(function (response) {
       console.log(response);
+      setUserError('');
       const signupDisplay=JSON.stringify(response.data);
-      alert(signupDisplay);
+      setUserError(signupDisplay);
     })
     .catch(function (error) {
       console.log(error);
@@ -91,6 +82,7 @@ const LoginSignup = () => {
         <input type="email" placeholder="Enter your email" value={newUserEmail} onChange={(e) => setNewUserEmail(e.target.value)} />
         <input type="password" placeholder="Enter your password" value={newUserPassword1} onChange={(e) => setNewUserPassword1(e.target.value)}/>
         <a href="#">Forgot password?</a>
+        {userError && <span style={{ color: 'red', fontSize: '14px' }}>{userError}</span>}
         <input type="button" class="button" value="Login" onClick={handleLogin}/>
       </form>
       <div class="signup">
