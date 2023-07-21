@@ -100,6 +100,7 @@ const LoginSignup = () => {
         onChange={(e) => setNewUserPassword1(e.target.value)}/>
         <input type="password" placeholder="Confirm your password" value={newUserPassword2}
         onChange={(e) => setNewUserPassword2(e.target.value)}/>
+          {userError && <span style={{ color: 'red', fontSize: '14px' }}>{userError}</span>}
         <input type="button" class="button" value="Signup"  onClick={handleSignup}/>
       </form>
       <div class="signup">
