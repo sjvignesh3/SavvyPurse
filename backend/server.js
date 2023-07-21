@@ -3,6 +3,7 @@ const app=express();
 const cors=require("cors");
 const mongoose=require("mongoose");
 const Info=require('./model');
+const ExpenseInfo=require('./expense');
 
 app.use(cors());
 app.use(express.json());
@@ -64,13 +65,49 @@ app.post('/login', async (req, res) => {
         return res.send("login success");
       }
      else{
-      res.send("Invalid credentials");
+      res.send("invalid credentials");
     }
     } catch (error) {
       console.error('Error during login', error);
       res.send("Internal server error");
     }
   });
+
+
+  app.post('/adddata', async(req, res) => {
+   
+    const{catogory,amount,budget,date}=req.body;
+    
+      try {
+    
+          
+            const expenseData = new ExpenseInfo({
+                      catogory,
+                      amount,
+                      budget,
+                      date,
+                  })
+          await expenseData.save();
+          return res.send("Expense added successfully..")
+          
+      } catch(err) {
+    
+          console.log(err)
+          res.send("Internal  error");
+      }
+    });
+    
+    app.get('/retrive', async (req, res) => {
+      try {
+        // Fetch all items from the database
+        const items = await ExpenseInfo.find();
+        res.json(items);
+        //res.send("collected");
+      } catch (error) {
+       
+        res.send("not collected");
+      }
+    });
 
 
 const port = process.env.PORT || 4000;
