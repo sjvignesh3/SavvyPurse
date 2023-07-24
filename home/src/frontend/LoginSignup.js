@@ -1,6 +1,11 @@
 import React,{useState} from 'react';
 import axios from 'axios';
+import {Link, useNavigate} from 'react-router-dom'
+import "./style.css"
+
 const LoginSignup = () => {
+
+  const navigate = useNavigate();
 
   const[email,setEmail]=useState('');
   const[pass,setPass]=useState('');
@@ -14,17 +19,15 @@ const LoginSignup = () => {
     // Send data to server
     if(newUserEmail===""||newUserPassword1==="") {
       setUserError('Fill all the required field');
-      //alert("");
       return;
     }
     
     axios.post('http://localhost:4000/login', {newUserEmail,newUserPassword1})
       .then(function (response) {
-        console.log(response);
-        setUserError('');
         const loginDisplay=JSON.stringify(response.data);
         setUserError(loginDisplay);
       })
+      .then(()=> navigate('/dashboard'))
       .catch(function (error) {
         console.log(error);
       });
@@ -43,7 +46,7 @@ const LoginSignup = () => {
       return;
     }
 
-     axios.post('http://localhost:4000/insert', {
+     axios.post('http://localhost:4000/signup', {
       // new_email1: newUserEmail,
       // new_password1: newUserPassword1,
       // new_password2:newUserPassword2,
@@ -55,6 +58,7 @@ const LoginSignup = () => {
       const signupDisplay=JSON.stringify(response.data);
       setUserError(signupDisplay);
     })
+    .then(()=> navigate('/dashboard'))
     .catch(function (error) {
       console.log(error);
     });
@@ -65,15 +69,6 @@ const LoginSignup = () => {
 
     return (
         <div >
-<head>
- 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
-  <title>Login & Registration Form</title>
-
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
   <div class="container">
     <input type="checkbox" id="check"/>
     <div class="login form">
@@ -110,7 +105,6 @@ const LoginSignup = () => {
       </div>
     </div>
   </div>
-</body>
 </div>
     )
 }

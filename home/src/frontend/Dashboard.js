@@ -1,5 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import axios from 'axios';
+import "./style.css"
+import "./DashboardStyle.css"
+
  const Dashboard = () => {
 
   const currentDate = new Date();
@@ -16,10 +19,6 @@ import axios from 'axios';
    const expenditure=document.getElementById("expenditure-value");
    const balance=document.getElementById("balance-amount");
 
-   
-
- 
-
    const handleExpense = async (e) => {
     e.preventDefault();
     // Send data to server
@@ -34,7 +33,7 @@ import axios from 'axios';
       return;
     }
     
-    axios.post('http://localhost:4000/adddata', {catogory,amount,budget,date})
+    axios.post('http://localhost:4000/addExpense', {catogory,amount,budget,date})
       .then(function (response) {
         console.log(response);
         setUserError('');
@@ -58,7 +57,7 @@ import axios from 'axios';
     e.preventDefault();
 
      
-       axios.get('http://localhost:4000/retrive')
+       axios.get('http://localhost:4000/getAllExpenses')
        .then(function (response) {
       const data = response.data; // Assuming the API returns an array of data
 
@@ -80,27 +79,7 @@ import axios from 'axios';
 
   
 
-   return(
-       
-   
-<html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Budget App</title>
-   
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    />
-   
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-   
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+   return(  
     <div class="wrapper">
       <div class="container">
         <div class="sub-container">
@@ -163,12 +142,9 @@ import axios from 'axios';
       <button class="submit" id="check-amount" >view today expense</button>
      
     </div>
-   
-  </body>
-</html>
     
-       
-    )
+   );
+    
  }
  export default Dashboard;
 
